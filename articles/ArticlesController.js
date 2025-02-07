@@ -91,4 +91,39 @@ router.post("/articles/update", (req, res) => {
     });
 });
 
+router.get("/articles/page/:num", (req, res) => {
+  const page = req.params.num;
+  const limit = 5;
+  let offset = 0;
+
+  if (isNaN(page) || page == 1) {
+    offset = 0;
+  } else {
+    offset = parseInt(page - 1) * limit;
+  }
+
+  Article.findAndCountAll({
+    limit,
+    offset,
+    order: [["id", "DESC"]],
+  }).then((articles) => {
+    let next;
+    if (offset + limit >= articles.count) {
+      next = false;
+    } else {
+      next = true;
+    }
+
+    let result = {
+      page: parseInt(page),
+      next,
+      articles,
+    };
+
+    Category.findAll().then((categories) => {
+      res.render("admin/articles/page", { result, categories });
+    });
+  });
+});
+
 module.exports = router;
