@@ -55,7 +55,7 @@ router.post("/authenticate", (req, res) => {
 
       if (correct) {
         req.session.user = { id: user.id, email: user.email };
-        res.json(req.session.user);
+        res.redirect("/admin/articles");
       } else {
         res.redirect("/login");
       }
