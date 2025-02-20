@@ -16,7 +16,7 @@ const User = require("./users/User");
 app.set("view engine", "ejs");
 
 // Sessions
-app.use(session({ secret: "anything", cookie: { maxAge: 30000 } }));
+app.use(session({ secret: "anything", cookie: { maxAge: 7200000 } }));
 
 // Static
 app.use(express.static("public"));
